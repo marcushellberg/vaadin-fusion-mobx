@@ -101,6 +101,7 @@ export class MainView extends LitElement {
         .status {
           display: grid;
           width: 40%;
+          margin: 0 auto;
           grid-template-columns: min-content 1fr;
           gap: var(--lumo-space-m);
           align-items: center;
