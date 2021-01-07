@@ -21,15 +21,6 @@ export class TaskListView extends LitElement {
   private todos: Todo[] = [];
   private binder = new Binder(this, TodoModel);
 
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        padding: var(--lumo-space-l);
-      }
-    `;
-  }
-
   render() {
     const { model } = this.binder;
 
@@ -90,5 +81,14 @@ export class TaskListView extends LitElement {
     this.todos = this.todos.map((todo) =>
       updated.id === todo.id ? updated : todo
     );
+  }
+
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+        padding: var(--lumo-space-l);
+      }
+    `;
   }
 }
