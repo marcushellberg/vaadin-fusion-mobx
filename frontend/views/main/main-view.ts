@@ -1,11 +1,14 @@
+import { MobxLitElement } from "@adobe/lit-mobx";
 import { CSSModule } from "@vaadin/flow-frontend/css-utils";
 import { AppLayoutElement } from "@vaadin/vaadin-app-layout/src/vaadin-app-layout";
 import "@vaadin/vaadin-app-layout/theme/lumo/vaadin-app-layout";
 import "@vaadin/vaadin-app-layout/vaadin-drawer-toggle";
 import "@vaadin/vaadin-tabs/theme/lumo/vaadin-tab";
 import "@vaadin/vaadin-tabs/theme/lumo/vaadin-tabs";
-import { css, customElement, html, LitElement, property } from "lit-element";
+import "@vaadin/vaadin-progress-bar";
+import { css, customElement, html, property } from "lit-element";
 import { router } from "../../index";
+import { store } from "../../store";
 
 interface MenuTab {
   route: string;
@@ -13,7 +16,7 @@ interface MenuTab {
 }
 
 @customElement("main-view")
-export class MainView extends LitElement {
+export class MainView extends MobxLitElement {
   @property({ type: Object }) location = router.location;
   @property({ type: Array }) menuTabs: MenuTab[] = [
     { route: "tasks", name: "Task List" },
@@ -26,7 +29,10 @@ export class MainView extends LitElement {
         <header slot="navbar" theme="dark">
           <vaadin-drawer-toggle></vaadin-drawer-toggle>
           <h1>${this.getSelectedTabName(this.menuTabs)}</h1>
-
+          <div class="status">
+            <div>${store.completedTodosCount}/${store.totalTodosCount}</div>
+            <vaadin-progress-bar value=${store.progress}></vaadin-progress-bar>
+          </div>
           <img src="images/user.svg" alt="Avatar" />
         </header>
 

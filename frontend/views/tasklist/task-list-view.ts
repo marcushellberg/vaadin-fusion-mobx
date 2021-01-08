@@ -1,11 +1,5 @@
-import {
-  css,
-  customElement,
-  html,
-  internalProperty,
-  LitElement,
-} from "lit-element";
-
+import { css, customElement, html } from "lit-element";
+import { MobxLitElement } from "@adobe/lit-mobx";
 import "@vaadin/vaadin-button";
 import "@vaadin/vaadin-text-field";
 import "@vaadin/vaadin-checkbox";
@@ -13,12 +7,10 @@ import "@vaadin/vaadin-progress-bar";
 import { Binder, field } from "@vaadin/form";
 import TodoModel from "../../generated/com/example/application/TodoModel";
 import Todo from "../../generated/com/example/application/Todo";
-import * as endpoint from "../../generated/TodoEndpoint";
+import { store } from "../../store";
 
 @customElement("task-list-view")
-export class TaskListView extends LitElement {
-  @internalProperty()
-  private todos: Todo[] = [];
+export class TaskListView extends MobxLitElement {
   private binder = new Binder(this, TodoModel);
 
   render() {
@@ -33,7 +25,7 @@ export class TaskListView extends LitElement {
         >
       </div>
       <div class="tasks">
-        ${this.todos.map(
+        ${store.todos.map(
           (todo) => html`
             <div class="todo">
               <vaadin-checkbox
@@ -49,38 +41,14 @@ export class TaskListView extends LitElement {
     `;
   }
 
-  async connectedCallback() {
-    super.connectedCallback();
-    this.todos = await endpoint.getTodos();
-  }
-
   async addTask() {
-    await this.binder.submitTo(this.saveTodo);
+    await this.binder.submitTo(store.saveTodo.bind(store));
     this.binder.clear();
   }
 
   updateTodoStatus(todo: Todo, e: CustomEvent) {
     todo.done = e.detail.value;
-    this.saveTodo(todo);
-  }
-
-  async saveTodo(todo: Todo) {
-    const saved = await endpoint.saveTodo(todo);
-    if (todo.id === 0) {
-      this.addTodo(saved);
-    } else {
-      this.updateTodo(saved);
-    }
-  }
-
-  private addTodo(todo: Todo) {
-    this.todos = [...this.todos, todo];
-  }
-
-  private updateTodo(updated: Todo) {
-    this.todos = this.todos.map((todo) =>
-      updated.id === todo.id ? updated : todo
-    );
+    store.saveTodo(todo);
   }
 
   static get styles() {
