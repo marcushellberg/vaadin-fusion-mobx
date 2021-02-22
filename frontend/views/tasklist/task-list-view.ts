@@ -30,7 +30,7 @@ export class TaskListView extends MobxLitElement {
             <div class="todo">
               <vaadin-checkbox
                 ?checked=${todo.done}
-                @checked-changed=${(e: CustomEvent) =>
+                @change=${(e: CustomEvent) =>
                   this.updateTodoStatus(todo, e)}
               ></vaadin-checkbox>
               ${todo.task}
