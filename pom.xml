@@ -12,7 +12,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <vaadin.version>18.0.2</vaadin.version>
+    <vaadin.version>19.0.0.rc1</vaadin.version>
   </properties>
 
   <parent>
@@ -32,6 +32,12 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>vaadin-prereleases</id>
+      <url>
+                https://maven.vaadin.com/vaadin-prereleases/
+            </url>
+    </repository>
     <!-- Repository used by Vaadin add-ons -->
     <repository>
       <id>Vaadin Directory</id>
@@ -50,6 +56,12 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>vaadin-prereleases</id>
+      <url>
+                https://maven.vaadin.com/vaadin-prereleases/
+            </url>
     </pluginRepository>
   </pluginRepositories>
 

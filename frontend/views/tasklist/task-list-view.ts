@@ -1,5 +1,4 @@
-import { css, customElement, html } from "lit-element";
-import { MobxLitElement } from "@adobe/lit-mobx";
+import { customElement, html } from "lit-element";
 import "@vaadin/vaadin-button";
 import "@vaadin/vaadin-text-field";
 import "@vaadin/vaadin-checkbox";
@@ -7,10 +6,12 @@ import "@vaadin/vaadin-progress-bar";
 import { Binder, field } from "@vaadin/form";
 import TodoModel from "../../generated/com/example/application/TodoModel";
 import Todo from "../../generated/com/example/application/Todo";
-import { store } from "../../store";
+import { store } from "../../stores/store";
+import { View } from "../../view";
+import { CheckboxElement } from "@vaadin/vaadin-checkbox";
 
 @customElement("task-list-view")
-export class TaskListView extends MobxLitElement {
+export class TaskListView extends View {
   private binder = new Binder(this, TodoModel);
 
   render() {
@@ -30,8 +31,7 @@ export class TaskListView extends MobxLitElement {
             <div class="todo">
               <vaadin-checkbox
                 ?checked=${todo.done}
-                @change=${(e: CustomEvent) =>
-                  this.updateTodoStatus(todo, e)}
+                @change=${(e: CustomEvent) => this.updateTodoStatus(todo, e)}
               ></vaadin-checkbox>
               ${todo.task}
             </div>
@@ -47,16 +47,8 @@ export class TaskListView extends MobxLitElement {
   }
 
   updateTodoStatus(todo: Todo, e: CustomEvent) {
-    todo.done = e.detail.value;
+    const checkBox = e.target as CheckboxElement;
+    todo.done = checkBox.checked;
     store.saveTodo(todo);
-  }
-
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        padding: var(--lumo-space-l);
-      }
-    `;
   }
 }
