@@ -4,7 +4,7 @@ import * as endpoint from "../generated/TodoEndpoint";
 class Store {
   todos: Todo[] = [];
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, { init: false });
     this.init();
   }
 
