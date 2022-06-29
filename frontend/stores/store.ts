@@ -18,11 +18,19 @@ class Store {
 
   async saveTodo(todo: Todo) {
     const saved = await endpoint.saveTodo(todo);
-    if (todo.id === 0) {
+    if (this.isNewTodo(todo)) {
       this.addTodo(saved);
     } else {
       this.updateTodo(saved);
     }
+  }
+
+  private todoExists(todo: Todo) {
+    return this.todos.some((t) => t.id === todo.id);
+  }
+
+  private isNewTodo(todo: Todo) {
+    return !this.todoExists(todo);
   }
 
   private addTodo(todo: Todo) {
